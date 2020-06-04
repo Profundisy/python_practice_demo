@@ -1,3 +1,5 @@
+from flush_donghua import flush_str
+
 class Q_Error(ValueError):
     pass
 
@@ -32,8 +34,9 @@ class Shop():
         self.cangku = cangku
         sale_while = True
         while sale_while:
-            try:     
-                self.baowuming = input('请输入想要卖掉的物品名\n(铜，铁，银，金),输入q退出:\n')
+            try: 
+                flush_str('| 请输入想要卖掉的物品名',0.02)   
+                self.baowuming = input('(铜，铁，银，金),输入q退出:\n')
                 if self.baowuming == '铜' :
                     self.money += 5
                 elif self.baowuming == '铁':
@@ -46,14 +49,14 @@ class Shop():
                     raise Q_Error  
                 self.cangku.remove(self.baowuming)
                 print(self.cangku)
-                print("%s出售成功✔"%self.baowuming)
-                print('当前💰余额为%d'%self.money)
+                flush_str("%s出售成功✔"%self.baowuming,0.03)
+                flush_str('当前💰余额为%d'%self.money,0.03)
             #自定义的Q_Error的范围小于VuleError 所以应该在上面
             except Q_Error:
-                print("|------ ---退出商店🙋‍♂--- -----|")
+                flush_str("|------ ---退出商店🙋‍♂--- -----|",0.08)
                 break
 
             except ValueError:
-                print('你的仓库里没有%s🤷‍♂️，请检查后重新输入'%self.baowuming)
+                flush_str('你的仓库里没有%s🤷‍♂，请检查后重新输入'%self.baowuming,0.02)
 
         return [self.cangku ,self.money]

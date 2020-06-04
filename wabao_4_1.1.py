@@ -8,6 +8,7 @@ from shopping import Shop
 from baocangku import Baoku
 from choujiang import Cj
 from player_log_in import log_in
+from flush_donghua import flush_str
 
 class Wabao_chushihua():
 
@@ -24,7 +25,8 @@ class Wabao_chushihua():
         #创建一个商店
         self.shangdian = Shop()
         self.cjks = Cj(self.player.money)
-        print('%s开启了%s之旅'%(self.player_name,self.baoku_name))
+        str_ = '%s开启了%s之旅'%(self.player_name,self.baoku_name)
+        flush_str(str_,0.02)
 
     def game_main(self):
         try :
@@ -86,10 +88,10 @@ class Wabao_chushihua():
         with open(game_data_addr, 'a', encoding='utf-8') as f:
             f.write(game_data)
             f.write("\n")
-            print('\n|       --正在存档中🛀--       |')
-        print("\n*---游戏终止，正在退出。。。---*")
+            flush_str('\n|       --正在存档中🛀--       |',0.1)
+        print("*---游戏结束，正在退出。。。---*")
         time.sleep(1)
-        print('\n>>>下次再来>>>')
+        print('>>>下次再来>>>')
 
 
     def load_cundang(self,player_info,baoku_info):
@@ -101,76 +103,85 @@ class Wabao_chushihua():
         self.player.money = self.player_info[2]
         self.baoku_list = self.baoku_info[1]
         return self.player_name
-                    
+
+                
 #创建一个游戏
 print("🥰----------welcome----------🥰")
-player_name = input("| 👩请输入您的游戏id👉‍：")
-
-player_data_name = log_in(player_name)
-#print(player_data_name)
-print("|        -正在登录中🏃‍🏃-      ‍|")
-#读档
-game_data_addr = ".\\game_data\\"+player_data_name
-#print(game_data_addr)
 try:
+    player_name = input("| 👩请输入您的游戏id👉‍：")
+    #游戏初始化
+    player_data_name = log_in(player_name)
+    if not os.path.exists("game_data"):
+        os.mkdir("game_data")
 
-    with open(game_data_addr,'r') as f:
-        yuanshi_game_data_all = f.readlines()
-        game_date_time_list = []
-        geshihua_game_data_all = []
-        for game_data_line in yuanshi_game_data_all:
-            #删除每一行的\n
-            game_data_line = game_data_line.strip("\n")
-            #将每行的字符型字典转换成字典
-            game_data_line = eval(game_data_line)
-            temp = game_data_line["time"]
-            game_date_time_list.append(temp)
-            geshihua_game_data_all.append(game_data_line)
-        #print(game_date_time_list)#[time1,time2,time3]#问玩家选哪个档
-        print("|  -以下是您之前的游戏存档👇-  |")
-        for i in game_date_time_list:
-            print(f"#  ---{i}---   #")
-        choice_gamedata_time = input("|    --选哪个档🤔 ？")
-        if choice_gamedata_time in game_date_time_list:
-            for i in geshihua_game_data_all:
-                if choice_gamedata_time == i["time"]:
-                    game_data_choice = i
-                    player_info = game_data_choice['player']
-                    baoku_info = game_data_choice['baoku']
-        else:
-            print("您输入的存档有误")
-            raise FileNotFoundError
+    flush_str(">>>>正在登录游戏中🏃‍🏃🏃‍。。。",0.08)
+    #读档
+    game_data_addr = ".\\game_data\\"+player_data_name
+
+    #print(game_data_addr)
+    try:
+
+        with open(game_data_addr,'r') as f:
+            yuanshi_game_data_all = f.readlines()
+            game_date_time_list = []
+            geshihua_game_data_all = []
+            for game_data_line in yuanshi_game_data_all:
+                #删除每一行的\n
+                game_data_line = game_data_line.strip("\n")
+                #将每行的字符型字典转换成字典
+                game_data_line = eval(game_data_line)
+                temp = game_data_line["time"]
+                game_date_time_list.append(temp)
+                geshihua_game_data_all.append(game_data_line)
+            #print(game_date_time_list)#[time1,time2,time3]#问玩家选哪个档
+            print("|  -以下是您之前的游戏存档👇-  |")
+            for i in game_date_time_list:
+                print(f"#  ---{i}---   #")
+            choice_gamedata_time = input("|    --选哪个档🤔 ？")
+            if choice_gamedata_time in game_date_time_list:
+                for i in geshihua_game_data_all:
+                    if choice_gamedata_time == i["time"]:
+                        game_data_choice = i
+                        player_info = game_data_choice['player']
+                        baoku_info = game_data_choice['baoku']
+            else:
+                print("您输入的存档有误")
+                raise FileNotFoundError
 
 
 
-    if player_name == player_info[0]:
-        time.sleep(1)
-        wabao_game = Wabao_chushihua(player_name,"王之财宝")
-        print('|  -正在读档中。。。')
-        wabao_game.load_cundang(player_info,baoku_info)
-    #游戏运行   
-        wabao_game.game_main()
-
-    else :
-        wabao_game = Wabao_chushihua(player_name,"王之财宝")
-        print('新游戏载入中。。。')
-    #游戏运行   
-        wabao_game.game_main()
-
-#开新档
-except FileNotFoundError :
-    choice_quit = input("进行新游戏/y；退出游戏/n")
-
-    if choice_quit in ["Y","y"]:
-        wabao_game = Wabao_chushihua(player_name,"王之财宝")
+        if player_name == player_info[0]:
+            time.sleep(1)
+            wabao_game = Wabao_chushihua(player_name,"王之财宝")
+            print('|  -正在读档中。。。')
+            wabao_game.load_cundang(player_info,baoku_info)
         #游戏运行   
-        wabao_game.game_main()
+            wabao_game.game_main()
 
-    if choice_quit in ["N","n"]:
-        print("正在退出游戏")
-        time.sleep(0.5)
-        print("再见")
+        else :
+            wabao_game = Wabao_chushihua(player_name,"王之财宝")
+            print('新游戏载入中。。。')
+        #游戏运行   
+            wabao_game.game_main()
 
+    #开新档
+    except FileNotFoundError :
+        choice_quit = input("进行新游戏/y；退出游戏/n")
+
+        if choice_quit in ["Y","y"]:
+            wabao_game = Wabao_chushihua(player_name,"王之财宝")
+            #游戏运行   
+            wabao_game.game_main()
+
+        if choice_quit in ["N","n"]:
+            print("正在退出游戏")
+            time.sleep(0.5)
+            print("再见")
+
+except KeyboardInterrupt :
+    print("\n正在退出游戏")
+    time.sleep(0.5)
+    print("再见")
     
 
     
