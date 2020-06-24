@@ -8,12 +8,12 @@ class Baoku():
     def gailv_jisuan(self,gai_lv,jiazhi):
         '''输入比重，和对应的价值宝物'''
         for i in range(gai_lv):
-            #gai_lv 这里代表循环次数，50就循环了50次(append了50次)
+            # gai_lv 这里代表循环次数，50就循环了50次(append了50次)
                 self.baoku.append(jiazhi)
 
     def baoku_tianchong(self):
         """宝库填充"""
         for i in self.gai_lv_shuxing:
             self.gailv_jisuan(i[0],i[1])
-        #返回一个填充后的宝库
+        # 返回一个填充后的宝库
         return self.baoku

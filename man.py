@@ -1,7 +1,8 @@
 import random
 import time
 
-from flush_donghua import flush_str
+from settings import flush_str
+
 
 class Man():
 
@@ -35,13 +36,13 @@ class Man():
         del self.baoku[num]
         #print(len(self.baoku))
         print("|                              |")
-        flush_str('*********挖宝结束了💦..*********',0.02)
+        flush_str('*********挖宝结束了--..*********',0.02)
         self.tili -= 10
         return [self.cangku,self.tili]
 
     def jianding(self,baowuming):
         '''鉴定宝物的种类'''
-        flush_str('|       -开始鉴定🔍物品-       |',0.01)
+        flush_str('|       -开始鉴定>>物品-       |',0.01)
         self.baowuming = baowuming
         if self.baowuming == "石头":
             self.haoshi(2)
@@ -59,5 +60,5 @@ class Man():
             self.haoshi(10)
             print('|        >--金 ➕ 1-🤑-<       |')
         flush_str('|        -结束鉴定物品-        |',0.02)
-        print("             -👇-              ")
+        print("             -↓↓-              ")
     

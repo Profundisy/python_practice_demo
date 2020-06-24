@@ -1,4 +1,4 @@
-from flush_donghua import flush_str
+from settings import flush_str
 
 class Q_Error(ValueError):
     pass
