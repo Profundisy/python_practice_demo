@@ -90,7 +90,7 @@ class Wabao_chushihua():
     def save_gamedate(self):
         '''存档'''
         Now_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) 
-        game_data = json.dumps({"player":[self.player_name,self.player.tili,self.player.money],
+        game_data = json.dumps({"player":[self.player_name,self.player.tili,self.player.money,self.player.cangku],
                 "baoku":[self.baoku_name,self.baoku_list],"time":Now_time})
         game_data_addr = ".\\game_data\\"+self.player_name+".json"
 
@@ -103,7 +103,6 @@ class Wabao_chushihua():
         time.sleep(1)
         print('>>>下次再来>>>')
 
-
     def load_cundang(self,player_info,baoku_info):
         
         self.player_info = player_info
@@ -111,6 +110,7 @@ class Wabao_chushihua():
         self.player_name = self.player_info[0]
         self.player.tili = self.player_info[1]
         self.player.money = self.player_info[2]
+        self.player.cangku = self.player_info[3]
         self.baoku_list = self.baoku_info[1]
 
         return self.player_name
@@ -119,6 +119,7 @@ class Wabao_chushihua():
 # 创建一个游戏
 print("----------welcome----------")
 try:
+    # 捕获keyboardError
     player_name = input("| 请输入您的游戏id‍：")
 
     # 游戏初始化
@@ -162,6 +163,7 @@ try:
                         game_data_choice = i
                         player_info = game_data_choice['player']
                         baoku_info = game_data_choice['baoku']
+                        # cangku_info = game_data_choice
 
             else:
                 print("您输入的存档有误")
